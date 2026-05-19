@@ -380,7 +380,14 @@ def _to_chat_completion_from_stream_events(
             continue
 
         event_type = raw_event.get("type")
-        if event_type == "response.output_text.delta":
+        if event_type in {"error", "server_error"}:
+            error_info = raw_event.get("error", {})
+            if isinstance(error_info, dict):
+                msg = error_info.get("message") or str(error_info)
+            else:
+                msg = str(error_info) if error_info else "unknown server error"
+            raise RuntimeError(f"OpenAI server error in stream: {msg}")
+        elif event_type == "response.output_text.delta":
             delta = raw_event.get("delta")
             if isinstance(delta, str):
                 output_chunks.append(delta)

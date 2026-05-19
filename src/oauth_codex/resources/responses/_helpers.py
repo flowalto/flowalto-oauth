@@ -22,6 +22,23 @@ def usage_from_engine(usage: Any) -> TokenUsage | None:
     )
 
 
+def _coerce_error(error: Any) -> str | None:
+    """Normalize an error value to str | None.
+
+    The Responses API can return ``error`` as a structured dict
+    (e.g. ``{"type": "server_error", "message": "...", "param": null}``)
+    instead of a plain string.  ResponseStreamEvent expects ``str | None``,
+    so coerce dicts to their ``message`` field (or a JSON fallback).
+    """
+    if error is None:
+        return None
+    if isinstance(error, str):
+        return error
+    if isinstance(error, dict):
+        return error.get("message") or str(error)
+    return str(error)
+
+
 def response_from_engine(resp: Any) -> Response:
     if isinstance(resp, dict):
         return Response(
@@ -59,7 +76,7 @@ def event_from_engine(event: Any) -> ResponseStreamEvent:
             delta=event.get("delta", None),
             usage=usage_from_engine(event.get("usage", None)),
             raw=event.get("raw", None),
-            error=event.get("error", None),
+            error=_coerce_error(event.get("error", None)),
             call_id=event.get("call_id", None),
             response_id=event.get("response_id", None),
             finish_reason=event.get("finish_reason", None),
@@ -70,7 +87,7 @@ def event_from_engine(event: Any) -> ResponseStreamEvent:
         delta=getattr(event, "delta", None),
         usage=usage_from_engine(getattr(event, "usage", None)),
         raw=getattr(event, "raw", None),
-        error=getattr(event, "error", None),
+        error=_coerce_error(getattr(event, "error", None)),
         call_id=getattr(event, "call_id", None),
         response_id=getattr(event, "response_id", None),
         finish_reason=getattr(event, "finish_reason", None),
