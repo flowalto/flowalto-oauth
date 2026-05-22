@@ -45,7 +45,7 @@ jobs:
           assert spec.loader is not None
           spec.loader.exec_module(module)
           runtime_version = module.__version__
-          installed_version = importlib.metadata.version("oauth-codex")
+          installed_version = importlib.metadata.version("flowalto-oauth")
           changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
           if tag != runtime_version:
@@ -93,7 +93,7 @@ jobs:
 
           assert Client is not None
           assert AsyncClient is not None
-          assert oauth_codex.__version__ == importlib.metadata.version("oauth-codex")
+          assert oauth_codex.__version__ == importlib.metadata.version("flowalto-oauth")
           print(f"release wheel smoke OK: {oauth_codex.__version__}")
           PY
 
@@ -109,7 +109,7 @@ jobs:
     needs: validate-release
     environment:
       name: pypi
-      url: https://pypi.org/p/oauth-codex
+      url: https://pypi.org/p/flowalto-oauth
     permissions:
       id-token: write
 

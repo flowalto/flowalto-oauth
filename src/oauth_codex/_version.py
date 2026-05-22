@@ -1,2 +1,2 @@
-__title__ = "oauth-codex"
-__version__ = "4.0.0"
+__title__ = "flowalto-oauth"
+__version__ = "4.0.1"

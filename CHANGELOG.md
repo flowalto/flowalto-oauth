@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.1
+
+### Changed
+
+- Renamed PyPI distribution from `oauth-codex` to `flowalto-oauth`
+- Python import name (`oauth_codex`) is unchanged
+
 ## 4.0.0
 
 ### Breaking
