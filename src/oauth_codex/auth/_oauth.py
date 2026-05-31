@@ -102,11 +102,11 @@ class OAuthProvider:
             server_thread = threading.Thread(target=server.serve_forever, daemon=True)
             server_thread.start()
 
-            self._output_callback("Opening browser for authentication...")
-            if not webbrowser.open(authorize_url):
-                self._output_callback(
-                    f"Could not open browser automatically. Open this URL manually:\n{authorize_url}"
-                )
+            self._output_callback(
+                f"Opening browser for authentication...\n"
+                f"If the browser does not open, visit this URL:\n{authorize_url}"
+            )
+            webbrowser.open(authorize_url)
 
             try:
                 callback_url = callback_queue.get(timeout=120)
