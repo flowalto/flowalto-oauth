@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.2
+
+### Fixed
+
+- OAuth login now always prints the authorization URL alongside the "Opening browser" message, so the link is available to copy on Linux/macOS when the browser does not open automatically
+
 ## 4.0.1
 
 ### Changed
